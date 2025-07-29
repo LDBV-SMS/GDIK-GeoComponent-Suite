@@ -1,5 +1,5 @@
 {
-  "name": "@LDBV-SMS/GDIK-GeoComponent-Suite",
+  "name": "@ldbv-sms/gdik-geocomponent-suite",
   "version": "1.3.4",
   "author": {
     "name": "Landesamt für Geoinformation und Landesvermessung Niedersachsen (LGLN)",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/GDIK2022/GDIK-GeoComponent-Suite.git"
+    "url": "https://github.com/GDIK2022/gdik-geocomponent-suite.git"
   },
   "scripts": {
     "test": "npm run patch:dependencies && jest --config ./jest.config.js",
