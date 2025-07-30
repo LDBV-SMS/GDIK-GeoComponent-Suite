@@ -15,14 +15,15 @@
     "url": "https://github.com/GDIK2022/gdik-geocomponent-suite.git"
   },
   "scripts": {
-    "test": "npm run patch:dependencies && jest --config ./jest.config.js",
+    "test": "jest --config ./jest.config.js",
     "test:coverage": "npm run test -- --collectCoverage --collectCoverageFrom=src/**/*.js",
     "test:watch": "npm run test -- --watch",
     "lint": "eslint ./src/** ./test/**",
     "audit": "npm audit --prod",
-    "examples": "npm run patch:dependencies && parcel example/index.html",
-    "build": "npm run patch:dependencies && parcel build",
-    "patch:dependencies": "./scripts/patch-dependencies.sh"
+    "examples": "parcel example/index.html",
+    "build": "parcel build",
+    "patch:dependencies": "./scripts/patch-dependencies.sh",
+    "postinstall": "npm run patch:dependencies"
   },
   "source": "src/index.js",
   "cdn": "dist/gdik-geocomponent-suite.js",
