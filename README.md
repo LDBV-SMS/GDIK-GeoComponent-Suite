@@ -30,6 +30,10 @@ The element can be customized by providing an URL pointing to a config file to t
 
 #### Events
 
+##### onConfigLoaded
+
+When default config or config given by `config-url` is applied to component the component emits an event of type "onConfigLoaded". Applied config is added to details attribute of event as object.
+
 ##### "input"
 
 When value is changed the component emits an event of type "input". Current component value is added to data attribute of event as string.
@@ -37,6 +41,8 @@ When value is changed the component emits an event of type "input". Current comp
 ##### "change"
 
 When value is changed the component emits an event of type "change". Current component value is added to detail attribute of event as object or null.
+
+#### Methods
 
 ##### getImage(mimetype)
 
@@ -78,6 +84,10 @@ The element can be customized by providing an URL pointing to a config file to t
 | lng        | no       | string     | de         | yes      | Language of text elements like tooltips
 
 #### Events
+
+##### onConfigLoaded
+
+When default config or config given by `config-url` is applied to component the component emits an event of type "onConfigLoaded". Applied config is added to details attribute of event as object.
 
 ##### "input"
 

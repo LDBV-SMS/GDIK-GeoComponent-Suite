@@ -10,6 +10,14 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.3.5
+### Added
+- onConfigLoaded event to gdik-input and gdik-select
+### Changed
+### Deprecated
+### Removed
+### Fixed
+
 ## 1.3.4
 ### Added
 - Mechanism to patch dependencies
