@@ -7,6 +7,8 @@ import GCSMap from "../../src/components/gcs-map/GCSMap";
 import * as searchConfig from "./assets/search.json";
 import * as drawTypeConfig from "./assets/drawType.json";
 
+import * as customConfig from "../components/gcs-map/assets/config.json";
+
 describe("Init gdik-input", () => {
     const featureCollection = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [1, 1]}}]},
         value = JSON.stringify(featureCollection);
@@ -251,12 +253,16 @@ describe("value assignment", () => {
         document.body.appendChild(component);
         await new Promise(process.nextTick);
 
-        expect(dispatchEventSpy).not.toHaveBeenCalled();
+        expect(dispatchEventSpy.mock.calls.length).toBe(1);
+        expect(dispatchEventSpy.mock.calls.some(([evt]) => evt.type === "onConfigLoaded")).toBe(true);
+        expect(dispatchEventSpy.mock.calls.some(([evt]) => evt.type === "change")).toBe(false);
     });
 
     it("should not emit events when component value is set from outside", async () => {
         const component = new GDIKInput(),
             dispatchEventSpy = jest.spyOn(component, "dispatchEvent");
+
+        fetch.mockResponseOnce(JSON.stringify(customConfig));
 
         component.setAttribute("draw-type", "Point");
 
@@ -265,7 +271,9 @@ describe("value assignment", () => {
 
         component.setAttribute("value", value);
 
-        expect(dispatchEventSpy).not.toHaveBeenCalled();
+        expect(dispatchEventSpy.mock.calls.length).toBe(1);
+        expect(dispatchEventSpy.mock.calls.some(([evt]) => evt.type === "onConfigLoaded")).toBe(true);
+        expect(dispatchEventSpy.mock.calls.some(([evt]) => evt.type === "change")).toBe(false);
 
         expect(component.value).toEqual(featureCollection);
         expect(component.getAttribute("value")).toBe(value);
@@ -278,6 +286,8 @@ describe("value assignment", () => {
         const component = new GDIKInput(),
             dispatchEventSpy = jest.spyOn(component, "dispatchEvent");
 
+        fetch.mockResponseOnce(JSON.stringify(customConfig));
+
         component.setAttribute("draw-type", "Point");
 
         document.body.appendChild(component);
@@ -287,12 +297,15 @@ describe("value assignment", () => {
             return value;
         }}, attributeName: "feature", type: "attributes"}]);
 
-        expect(dispatchEventSpy).toHaveBeenCalledTimes(2);
+        expect(dispatchEventSpy).toHaveBeenCalledTimes(3);
     });
 
     it("should pass changed value in emitted event", async () => {
+
         const component = new GDIKInput(),
             dispatchEventSpy = jest.spyOn(component, "dispatchEvent");
+
+        fetch.mockResponseOnce(JSON.stringify(customConfig));
 
         component.setAttribute("draw-type", "Point");
 
@@ -303,17 +316,21 @@ describe("value assignment", () => {
             return value;
         }}, attributeName: "feature", type: "attributes"}]);
 
-        expect(dispatchEventSpy).toHaveBeenCalledTimes(2);
+        expect(dispatchEventSpy).toHaveBeenCalledTimes(3);
 
         // eslint-disable-next-line one-var
         const mockCalls = dispatchEventSpy.mock.calls;
 
-        expect(mockCalls[0][0]).toBeInstanceOf(InputEvent);
-        expect(mockCalls[1][0]).toBeInstanceOf(CustomEvent);
+        // configloaded
+        expect(mockCalls[0][0]).toBeInstanceOf(CustomEvent);
+        // input event
+        expect(mockCalls[1][0]).toBeInstanceOf(InputEvent);
+        // change event
+        expect(mockCalls[2][0]).toBeInstanceOf(CustomEvent);
 
         // eslint-disable-next-line one-var
-        const inputEvent = mockCalls[0][0],
-            changeEvent = mockCalls[1][0];
+        const inputEvent = mockCalls[1][0],
+            changeEvent = mockCalls[2][0];
 
         expect(inputEvent.type).toBe("input");
         expect(inputEvent.data).toEqual(value);
@@ -326,6 +343,8 @@ describe("value assignment", () => {
         const component = new GDIKInput(),
             dispatchEventSpy = jest.spyOn(component, "dispatchEvent");
 
+        fetch.mockResponseOnce(JSON.stringify(customConfig));
+
         component.setAttribute("draw-type", "Point");
 
         document.body.appendChild(component);
@@ -335,17 +354,18 @@ describe("value assignment", () => {
             return "";
         }}, attributeName: "feature", type: "attributes"}]);
 
-        expect(dispatchEventSpy).toHaveBeenCalledTimes(2);
+        expect(dispatchEventSpy).toHaveBeenCalledTimes(3);
 
         // eslint-disable-next-line one-var
         const mockCalls = dispatchEventSpy.mock.calls;
 
-        expect(mockCalls[0][0]).toBeInstanceOf(InputEvent);
-        expect(mockCalls[1][0]).toBeInstanceOf(CustomEvent);
+        expect(mockCalls[0][0]).toBeInstanceOf(CustomEvent);
+        expect(mockCalls[1][0]).toBeInstanceOf(InputEvent);
+        expect(mockCalls[2][0]).toBeInstanceOf(CustomEvent);
 
         // eslint-disable-next-line one-var
-        const inputEvent = mockCalls[0][0],
-            changeEvent = mockCalls[1][0];
+        const inputEvent = mockCalls[1][0],
+            changeEvent = mockCalls[2][0];
 
         expect(inputEvent.type).toBe("input");
         expect(inputEvent.data).toEqual("");
@@ -378,6 +398,8 @@ describe("value assignment", () => {
         const component = new GDIKInput(),
             dispatchEventSpy = jest.spyOn(component, "dispatchEvent");
 
+        fetch.mockResponseOnce(JSON.stringify(customConfig));
+
         component.setAttribute("draw-type", "Point");
 
         document.body.appendChild(component);
@@ -385,7 +407,13 @@ describe("value assignment", () => {
 
         component.setAttribute("value", "foobar");
 
-        expect(dispatchEventSpy).not.toHaveBeenCalled();
+        expect(dispatchEventSpy).toHaveBeenCalledTimes(1);
+
+        // eslint-disable-next-line one-var
+        const mockCalls = dispatchEventSpy.mock.calls;
+
+        expect(mockCalls[0][0]).toBeInstanceOf(CustomEvent);
+        expect(mockCalls[0][0].type).toBe("onConfigLoaded");
 
         expect(component.value).toEqual(null);
         expect(component.getAttribute("value")).toBe("foobar");
@@ -421,6 +449,36 @@ describe("config file handling", () => {
         expect(component.shadowRoot.childNodes[0].getAttribute("config-url")).toBe(configUrl);
 
         expect(mockedFetchConfig).toHaveBeenCalledWith(configUrl);
+    });
+
+    it("should trigger onConfigLoaded event when config is loaded", async () => {
+        const component = new GDIKInput(),
+            configUrl = "https://config",
+            spy = jest.spyOn(component, "dispatchEvent");
+
+        mockedFetchConfig.mockImplementation(() => JSON.parse(JSON.stringify(searchConfig)));
+
+        component.setAttribute("config-url", configUrl);
+
+        document.body.appendChild(component);
+        await new Promise(process.nextTick);
+
+        expect(spy).toBeCalledWith(expect.objectContaining({
+            type: "onConfigLoaded"
+        }));
+    });
+
+    it("should trigger onConfigLoaded event with default config when no config-url is set", async () => {
+        fetch.mockResponseOnce(JSON.stringify(customConfig));
+        const component = new GDIKInput(),
+            spy = jest.spyOn(component, "dispatchEvent");
+
+        document.body.appendChild(component);
+        await new Promise(process.nextTick);
+
+        expect(spy).toBeCalledWith(expect.objectContaining({
+            type: "onConfigLoaded"
+        }));
     });
 
     it("should set draw type by config file value", async () => {

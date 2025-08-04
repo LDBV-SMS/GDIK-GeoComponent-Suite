@@ -124,6 +124,7 @@ export default class GDIKSelect extends HTMLElement {
             }
             this.mapElement.appendChild(this.searchElement);
         }
+        this.dispatchEvent(new CustomEvent("onConfigLoaded", e));
     }
 
     setValue (value, silent) {
