@@ -131,7 +131,7 @@ export default class GDIKInput extends HTMLElement {
             }
             this.mapElement.appendChild(this.searchElement);
         }
-        this.dispatchEvent(new CustomEvent("configloaded", e));
+        this.dispatchEvent(new CustomEvent("configloaded", {detail: config}));
     }
 
     setValue (value, silent) {
