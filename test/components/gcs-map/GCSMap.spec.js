@@ -414,3 +414,34 @@ describe("public functions", () => {
         expect(component.map.getView().getCenter()).toEqual(coordinate);
     });
 });
+
+describe("Event triggering", () => {
+    beforeEach(() => {
+        jest.resetAllMocks();
+    });
+
+    it("should trigger configloaded event when config is loaded", async () => {
+        fetch.mockResponseOnce(JSON.stringify(customConfig));
+        const component = new GCSMap(),
+            spy = jest.spyOn(component, "dispatchEvent");
+
+        component.setAttribute("config-url", "http://config.service/config.json");
+
+        await component.connectedCallback();
+
+        expect(spy).toBeCalledWith(expect.objectContaining({
+            type: "configloaded"
+        }));
+    });
+
+    it("should trigger configloaded event with default config when no config-url is set", async () => {
+        const component = new GCSMap(),
+            spy = jest.spyOn(component, "dispatchEvent");
+
+        await component.connectedCallback();
+
+        expect(spy).toBeCalledWith(expect.objectContaining({
+            type: "configloaded"
+        }));
+    });
+});

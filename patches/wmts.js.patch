@@ -1,0 +1,27 @@
+# Pass crossOrigin parameter to WMTS-source
+@@ -86,9 +82,9 @@
+             transparent: attrs.transparent.toString(),
+             wrapX: wrapX,
+             requestEncoding: attrs.requestEncoding,
+-            scales: attrs.scales
++            scales: attrs.scales,
++            crossOrigin: attrs.crossOrigin
+         });
+-
+     if (size) {
+         generateArrays(resolutions, matrixIds, resLength, size);
+     }
+@@ -139,12 +130,11 @@
+                 matrixSizes.push([MatrixWidth, MatrixHeight]);
+                 scales.push(ScaleDenominator);
+             });
+-
+             if (options !== null) {
+                 const source = new WMTS(options);
+-
+                 source.matrixSizes = matrixSizes;
+                 source.scales = scales;
++                source.crossOrigin = attrs.crossOrigin
+                 tileLayer.set("options", options);
+                 tileLayer.setSource(source);
+                 tileLayer.getSource().refresh();

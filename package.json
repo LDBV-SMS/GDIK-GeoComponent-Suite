@@ -1,6 +1,6 @@
 {
-  "name": "@GDIK2022/GDIK-GeoComponent-Suite",
-  "version": "1.3.3",
+  "name": "@ldbv-sms/gdik-geocomponent-suite",
+  "version": "1.3.5",
   "author": {
     "name": "Landesamt für Geoinformation und Landesvermessung Niedersachsen (LGLN)",
     "email": "team-waas@lgln.niedersachsen.de",
@@ -12,16 +12,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/GDIK2022/GDIK-GeoComponent-Suite.git"
+    "url": "https://github.com/GDIK2022/gdik-geocomponent-suite.git"
   },
   "scripts": {
     "test": "jest --config ./jest.config.js",
-    "test:coverage": "jest --config ./jest.config.js --collectCoverage --collectCoverageFrom=src/**/*.js",
-    "test:watch": "jest --config ./jest.config.js --watch",
+    "test:coverage": "npm run test -- --collectCoverage --collectCoverageFrom=src/**/*.js",
+    "test:watch": "npm run test -- --watch",
     "lint": "eslint ./src/** ./test/**",
     "audit": "npm audit --prod",
     "examples": "parcel example/index.html",
-    "build": "parcel build"
+    "build": "parcel build",
+    "patch:dependencies": "./scripts/patch-dependencies.sh",
+    "postinstall": "npm run patch:dependencies"
   },
   "source": "src/index.js",
   "cdn": "dist/gdik-geocomponent-suite.js",
@@ -35,7 +37,7 @@
   "license": "EUPL-1.2",
   "dependencies": {
     "i18next": "^23.2.11",
-    "masterportalAPI": "bitbucket:geowerkstatt-hamburg/masterportalAPI#semver:v2.30.0"
+    "masterportalAPI": "bitbucket:geowerkstatt-hamburg/masterportalAPI#semver:v2.39.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",

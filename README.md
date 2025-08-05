@@ -2,7 +2,7 @@
 
 The GDIK GeoComponent Suite is a collection of web components extending HTML form by geographical input elements.
 
-A ready-to-use transpiled version of this component suite can be found [here](https://github.com/GDIK2022/GDIK-GeoComponent-Suite/releases/latest). Just download the ```gdik-geocomponent-suite.js``` file and add it to your project by using a script tag.
+A ready-to-use transpiled version of this component suite can be found [here](https://github.com/LDBV-SMS/GDIK-GeoComponent-Suite/releases/latest). Just download the ```gdik-geocomponent-suite.js``` file and add it to your project by using a script tag.
 
 GeoComponent Suite is build upon the [masterportalAPI](https://bitbucket.org/geowerkstatt-hamburg/masterportalapi/src/master/) project.
 
@@ -30,6 +30,10 @@ The element can be customized by providing an URL pointing to a config file to t
 
 #### Events
 
+##### configloaded
+
+When default config or config given by `config-url` is applied to the component, the component emits an event of type "configloaded". The applied config is added to the details attribute of the event as an object.
+
 ##### "input"
 
 When value is changed the component emits an event of type "input". Current component value is added to data attribute of event as string.
@@ -37,6 +41,8 @@ When value is changed the component emits an event of type "input". Current comp
 ##### "change"
 
 When value is changed the component emits an event of type "change". Current component value is added to detail attribute of event as object or null.
+
+#### Methods
 
 ##### getImage(mimetype)
 
@@ -78,6 +84,10 @@ The element can be customized by providing an URL pointing to a config file to t
 | lng        | no       | string     | de         | yes      | Language of text elements like tooltips
 
 #### Events
+
+##### configloaded
+
+When default config or config given by `config-url` is applied to the component, the component emits an event of type "configloaded". The applied config is added to the details attribute of the event as an object.
 
 ##### "input"
 
