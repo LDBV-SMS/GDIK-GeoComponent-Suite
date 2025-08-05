@@ -30,9 +30,9 @@ The element can be customized by providing an URL pointing to a config file to t
 
 #### Events
 
-##### onConfigLoaded
+##### configloaded
 
-When default config or config given by `config-url` is applied to component the component emits an event of type "onConfigLoaded". Applied config is added to details attribute of event as object.
+When default config or config given by `config-url` is applied to the component, the component emits an event of type "configloaded". The applied config is added to the details attribute of the event as an object.
 
 ##### "input"
 
@@ -85,9 +85,9 @@ The element can be customized by providing an URL pointing to a config file to t
 
 #### Events
 
-##### onConfigLoaded
+##### configloaded
 
-When default config or config given by `config-url` is applied to component the component emits an event of type "onConfigLoaded". Applied config is added to details attribute of event as object.
+When default config or config given by `config-url` is applied to the component, the component emits an event of type "configloaded". The applied config is added to the details attribute of the event as an object.
 
 ##### "input"
 

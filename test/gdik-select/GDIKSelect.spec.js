@@ -243,7 +243,7 @@ describe("config file handling", () => {
         expect(component.shadowRoot.childNodes[0].getAttribute("config-url")).toBe(configUrl);
     });
 
-    it("should trigger onConfigLoaded event when config is loaded", async () => {
+    it("should trigger configloaded event when config is loaded", async () => {
         const component = new GDIKSelect(),
             configUrl = "https://config",
             spy = jest.spyOn(component, "dispatchEvent");
@@ -256,11 +256,11 @@ describe("config file handling", () => {
         await new Promise(process.nextTick);
 
         expect(spy).toBeCalledWith(expect.objectContaining({
-            type: "onConfigLoaded"
+            type: "configloaded"
         }));
     });
 
-    it("should trigger onConfigLoaded event with default config when no config-url is set", async () => {
+    it("should trigger configloaded event with default config when no config-url is set", async () => {
         fetch.mockResponseOnce(JSON.stringify(customConfig));
         const component = new GDIKSelect(),
             spy = jest.spyOn(component, "dispatchEvent");
@@ -269,7 +269,7 @@ describe("config file handling", () => {
         await new Promise(process.nextTick);
 
         expect(spy).toBeCalledWith(expect.objectContaining({
-            type: "onConfigLoaded"
+            type: "configloaded"
         }));
     });
 

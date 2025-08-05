@@ -254,7 +254,7 @@ describe("value assignment", () => {
         await new Promise(process.nextTick);
 
         expect(dispatchEventSpy.mock.calls.length).toBe(1);
-        expect(dispatchEventSpy.mock.calls.some(([evt]) => evt.type === "onConfigLoaded")).toBe(true);
+        expect(dispatchEventSpy.mock.calls.some(([evt]) => evt.type === "configloaded")).toBe(true);
         expect(dispatchEventSpy.mock.calls.some(([evt]) => evt.type === "change")).toBe(false);
     });
 
@@ -272,7 +272,7 @@ describe("value assignment", () => {
         component.setAttribute("value", value);
 
         expect(dispatchEventSpy.mock.calls.length).toBe(1);
-        expect(dispatchEventSpy.mock.calls.some(([evt]) => evt.type === "onConfigLoaded")).toBe(true);
+        expect(dispatchEventSpy.mock.calls.some(([evt]) => evt.type === "configloaded")).toBe(true);
         expect(dispatchEventSpy.mock.calls.some(([evt]) => evt.type === "change")).toBe(false);
 
         expect(component.value).toEqual(featureCollection);
@@ -413,7 +413,7 @@ describe("value assignment", () => {
         const mockCalls = dispatchEventSpy.mock.calls;
 
         expect(mockCalls[0][0]).toBeInstanceOf(CustomEvent);
-        expect(mockCalls[0][0].type).toBe("onConfigLoaded");
+        expect(mockCalls[0][0].type).toBe("configloaded");
 
         expect(component.value).toEqual(null);
         expect(component.getAttribute("value")).toBe("foobar");
@@ -451,7 +451,7 @@ describe("config file handling", () => {
         expect(mockedFetchConfig).toHaveBeenCalledWith(configUrl);
     });
 
-    it("should trigger onConfigLoaded event when config is loaded", async () => {
+    it("should trigger configloaded event when config is loaded", async () => {
         const component = new GDIKInput(),
             configUrl = "https://config",
             spy = jest.spyOn(component, "dispatchEvent");
@@ -464,11 +464,11 @@ describe("config file handling", () => {
         await new Promise(process.nextTick);
 
         expect(spy).toBeCalledWith(expect.objectContaining({
-            type: "onConfigLoaded"
+            type: "configloaded"
         }));
     });
 
-    it("should trigger onConfigLoaded event with default config when no config-url is set", async () => {
+    it("should trigger configloaded event with default config when no config-url is set", async () => {
         fetch.mockResponseOnce(JSON.stringify(customConfig));
         const component = new GDIKInput(),
             spy = jest.spyOn(component, "dispatchEvent");
@@ -477,7 +477,7 @@ describe("config file handling", () => {
         await new Promise(process.nextTick);
 
         expect(spy).toBeCalledWith(expect.objectContaining({
-            type: "onConfigLoaded"
+            type: "configloaded"
         }));
     });
 

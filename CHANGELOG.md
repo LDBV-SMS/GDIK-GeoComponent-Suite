@@ -12,7 +12,7 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 
 ## 1.3.5
 ### Added
-- onConfigLoaded event to gdik-input and gdik-select
+- configloaded event to gdik-input and gdik-select
 ### Changed
 ### Deprecated
 ### Removed
