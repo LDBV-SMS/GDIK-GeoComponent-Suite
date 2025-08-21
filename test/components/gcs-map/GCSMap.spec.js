@@ -418,10 +418,11 @@ describe("public functions", () => {
 describe("Event triggering", () => {
     beforeEach(() => {
         jest.resetAllMocks();
+        fetch.resetMocks();
     });
 
     it("should trigger configloaded event when config is loaded", async () => {
-        fetch.mockResponseOnce(JSON.stringify(customConfig));
+        fetch.mockResponse(JSON.stringify(customConfig));
         const component = new GCSMap(),
             spy = jest.spyOn(component, "dispatchEvent");
 
@@ -432,6 +433,8 @@ describe("Event triggering", () => {
         expect(spy).toBeCalledWith(expect.objectContaining({
             type: "configloaded"
         }));
+
+        expect(spy.mock.calls[0][0].detail.portal.startCenter).toEqual(customConfig.portal.startCenter);
     });
 
     it("should trigger configloaded event with default config when no config-url is set", async () => {
