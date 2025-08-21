@@ -276,6 +276,11 @@ describe("Attribute change related", () => {
 
 describe("Reading of config.json", () => {
 
+    beforeEach(() => {
+        jest.resetAllMocks();
+        fetch.resetMocks();
+    });
+
     it("should initialize LayerManager correctly with foregroundLayer and backgroundLayer", async () => {
         fetch.mockResponseOnce(JSON.stringify(customConfig)); // customConfig has a foregroundLayer defined
         const component = new GCSMap();
