@@ -1,5 +1,5 @@
-import rawLayerList from "masterportalAPI/src/rawLayerList";
-import mapsAPI from "masterportalAPI/src/maps/api";
+import rawLayerList from "masterportalAPI/src/rawLayerList.js";
+import mapsAPI from "masterportalAPI/src/maps/api.js";
 import LayerManager from "../../../src/components/gcs-map/LayerManager";
 import * as defaultConfig from "../gcs-map/assets/config3.json";
 import i18next from "i18next";
@@ -13,7 +13,7 @@ describe("Select related", () => {
     let map, layerManager;
 
     beforeEach(() => {
-        map = mapsAPI.map.createMap();
+        map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D");
         layerManager = new LayerManager(map, [], undefined, defaultConfig.component.interactionLayer);
     });
 

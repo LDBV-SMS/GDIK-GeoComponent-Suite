@@ -1,18 +1,21 @@
 import i18next from "i18next";
 
 import mapsAPI from "masterportalAPI/src/maps/api.js";
-import rawLayerList from "masterportalAPI/src/rawLayerList";
+import rawLayerList from "masterportalAPI/src/rawLayerList.js";
 
 import LayerswitcherControl from "../../../src/components/gcs-layerswitcher/layerswitcherControl";
 
 import LayerManager from "../../../src/components/gcs-map/LayerManager";
 
+import * as _defaultConfig from "../gcs-map/assets/config.json";
+
 describe("Layerswitcher", () => {
+    const defaultConfig = JSON.parse(JSON.stringify(_defaultConfig));
 
     let layerManager, map, rawLayers;
 
     beforeEach(() => {
-        rawLayers = [
+        defaultConfig.services = [
             {
                 "id": "1001",
                 "typ": "WMS",
@@ -39,10 +42,7 @@ describe("Layerswitcher", () => {
             }
         ];
 
-
-        rawLayerList.initializeLayerList(rawLayers);
-
-        map = mapsAPI.map.createMap();
+        map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D");
         layerManager = new LayerManager(map, ["1001", "1002"]);
     });
 
@@ -72,7 +72,7 @@ describe("Layerswitcher", () => {
         layerEntries.forEach((layerEntry, idx) => {
             expect(layerEntry.nodeName).toBe("LI");
             expect(layerEntry.className).toContain("list-group-item");
-            expect(layerEntry.innerHTML).toBe(rawLayers[idx].name);
+            expect(layerEntry.innerHTML).toBe(defaultConfig.services[idx].name);
         });
     });
 

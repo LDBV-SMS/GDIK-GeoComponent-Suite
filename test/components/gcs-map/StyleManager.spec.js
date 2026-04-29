@@ -1,15 +1,18 @@
-import rawLayerList from "masterportalAPI/src/rawLayerList";
-import mapsAPI from "masterportalAPI/src/maps/api";
+import rawLayerList from "masterportalAPI/src/rawLayerList.js";
+import mapsAPI from "masterportalAPI/src/maps/api.js";
 import LayerManager from "../../../src/components/gcs-map/LayerManager";
 import StyleManager from "../../../src/components/gcs-map/StyleManager";
 
+import * as _defaultConfig from "../gcs-map/assets/config.json";
+
 describe("StyleManager", () => {
+    const defaultConfig = JSON.parse(JSON.stringify(_defaultConfig));
 
     let layerManager,
         styleList;
 
     beforeEach(() => {
-        rawLayerList.initializeLayerList([
+        defaultConfig.services = [
             {
                 "id": "1001",
                 "typ": "WMS",
@@ -54,8 +57,8 @@ describe("StyleManager", () => {
                 "version": "2.0.0",
                 "datasets": []
             }
-        ]);
-        const map = mapsAPI.map.createMap(),
+        ];
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = ["1001", "3003", "4003"],
             foregroundLayer = "2003";
 

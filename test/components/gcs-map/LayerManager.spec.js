@@ -1,14 +1,16 @@
 import VectorLayer from "ol/layer/Vector";
 
-import rawLayerList from "masterportalAPI/src/rawLayerList";
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 
 import LayerManager from "../../../src/components/gcs-map/LayerManager";
 
+import * as _defaultConfig from "../gcs-map/assets/config.json";
+
 describe("LayerManager", () => {
+    const defaultConfig = JSON.parse(JSON.stringify(_defaultConfig));
 
     beforeEach(() => {
-        rawLayerList.initializeLayerList([
+        defaultConfig.services = [
             {
                 "id": "1001",
                 "typ": "WMS",
@@ -77,11 +79,11 @@ describe("LayerManager", () => {
                 "datasets": [],
                 "gfiTheme": "default"
             }
-        ]);
+        ];
     });
 
     it("should create layers from given ids", () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = ["1001"],
             layerManager = new LayerManager(map, backgroundLayerIds);
 
@@ -92,7 +94,7 @@ describe("LayerManager", () => {
     });
 
     it("should create foreground layer from given id", () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = [],
             foregroundLayerId = "2003",
             layerManager = new LayerManager(map, backgroundLayerIds, foregroundLayerId);
@@ -104,7 +106,7 @@ describe("LayerManager", () => {
     });
 
     it("should create only background layers from given ids", () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = ["1001"],
             layerManager = new LayerManager(map, backgroundLayerIds);
 
@@ -116,7 +118,7 @@ describe("LayerManager", () => {
     });
 
     it("should have first given background layer visible", () => {
-        const map = mapsAPI.map.createMap();
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D");
 
         let backgroundLayerIds = ["1001", "1002"],
             layerManager = new LayerManager(map, backgroundLayerIds);
@@ -144,7 +146,7 @@ describe("LayerManager", () => {
     });
 
     it("should change the active and visible background layer", () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayersIds = ["1001", "1002"],
             layerManager = new LayerManager(map, backgroundLayersIds);
 
@@ -160,7 +162,7 @@ describe("LayerManager", () => {
     });
 
     it("should keep the foreground layer on top when changing the active background layer", () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayersIds = ["1001", "1002"],
             foregroundLayerId = "2003",
             layerManager = new LayerManager(map, backgroundLayersIds, foregroundLayerId);
@@ -173,7 +175,7 @@ describe("LayerManager", () => {
     });
 
     it("should log an error when given background layer id not present", () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = ["1003"];
 
         console.error = jest.fn();
@@ -184,7 +186,7 @@ describe("LayerManager", () => {
     });
 
     it("should log an error when given foreground layer id not present", () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = [],
             foregroundLayerId = "1339";
 
@@ -196,7 +198,7 @@ describe("LayerManager", () => {
     });
 
     it("should log an error when changing background layer to a not present id", async () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = ["1002"],
             layerManager = new LayerManager(map, backgroundLayerIds);
 
@@ -210,7 +212,7 @@ describe("LayerManager", () => {
     });
 
     it("should set the interaction layer on top", () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = ["1001", "1002"],
             layerManager = new LayerManager(map, backgroundLayerIds),
             layerOne = new VectorLayer(),
@@ -228,7 +230,7 @@ describe("LayerManager", () => {
     });
 
     it("should replace the existing interactionLayer with a new one", () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = ["1001", "1002"],
             layerManager = new LayerManager(map, backgroundLayerIds),
             layerOne = new VectorLayer(),
@@ -246,7 +248,7 @@ describe("LayerManager", () => {
     });
 
     it("should keep the foregroundLayer 1 below the interactionLayer", () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = ["1001", "1002"],
             foregroundLayerId = "2003",
             layerManager = new LayerManager(map, backgroundLayerIds, foregroundLayerId),
@@ -267,7 +269,7 @@ describe("LayerManager", () => {
     });
 
     it("should have foreground layer on top", () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = ["1001", "1002"],
             foregroundLayerId = "2003",
             layerManager = new LayerManager(map, backgroundLayerIds, foregroundLayerId);
@@ -280,7 +282,7 @@ describe("LayerManager", () => {
     });
 
     it("should initialize with interaction layer", () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = ["1001"],
             foregroundLayerId = null,
             interactionLayerId = "1337",
@@ -292,7 +294,7 @@ describe("LayerManager", () => {
     });
 
     it("should log an error when given interaction layer id is not present", () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = ["1001"],
             foregroundLayerId = null,
             interactionLayerId = "1336";
@@ -305,7 +307,7 @@ describe("LayerManager", () => {
     });
 
     it("should log an error when given interaction layer can't have interactions", () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = ["1001"],
             foregroundLayerId = null,
             interactionLayerId = "1338";
@@ -318,7 +320,7 @@ describe("LayerManager", () => {
     });
 
     it("should fail silently when given interaction layer id is not present", () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = ["1001"],
             foregroundLayerId = null,
             interactionLayerId = "1336";
@@ -334,7 +336,7 @@ describe("LayerManager", () => {
     });
 
     it("should fail silently when given interaction layer can't have interactions", () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = ["1001"],
             foregroundLayerId = null,
             interactionLayerId = "1338";
@@ -350,7 +352,7 @@ describe("LayerManager", () => {
     });
 
     it("should set the interaction layer on top by Id", () => {
-        const map = mapsAPI.map.createMap(),
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = ["1001", "1002"],
             layerManager = new LayerManager(map, backgroundLayerIds),
             layerOne = new VectorLayer(),

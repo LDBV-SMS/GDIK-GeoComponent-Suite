@@ -1,10 +1,10 @@
-import mapsAPI from "masterportalAPI/src/maps/api";
+import mapsAPI from "masterportalAPI/src/maps/api.js";
 import LayerManager from "../../../src/components/gcs-map/LayerManager";
 import StyleManager from "../../../src/components/gcs-map/StyleManager";
 import * as defaultConfig from "../gcs-map/assets/config3.json";
 import i18next from "i18next";
 import SelectControl from "../../../src/components/gcs-select/selectControl";
-import rawLayerList from "masterportalAPI/src/rawLayerList";
+import rawLayerList from "masterportalAPI/src/rawLayerList.js";
 import Select from "ol/interaction/Select.js";
 import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
@@ -16,7 +16,7 @@ describe("Select Control", () => {
     let map, layerManager, layerManager2, styleManager;
 
     beforeEach(() => {
-        map = mapsAPI.map.createMap();
+        map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D");
         layerManager = new LayerManager(map, []);
         layerManager2 = new LayerManager(map, [], undefined, defaultConfig.component.interactionLayer);
         styleManager = new StyleManager(defaultConfig.style, defaultConfig.component.interactionLayerStyleId, defaultConfig.component.interactionLayerHighlightStyleId);
