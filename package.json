@@ -58,7 +58,7 @@
     "https-browserify": "^1.0.0",
     "jest": "^28.1.1",
     "jest-canvas-mock": "^2.4.0",
-    "jest-environment-jsdom": "^28.1.1",
+    "jest-environment-jsdom": "^30.3.0",
     "jest-fetch-mock": "^3.0.3",
     "jest-transform-stub": "^2.0.0",
     "parcel": "^2.2.0",
