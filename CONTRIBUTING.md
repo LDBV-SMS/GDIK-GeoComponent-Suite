@@ -9,8 +9,8 @@ All non top level components are documented [here](./components.md). Top level c
 You should have the following things installed:
 
 - Git
-- Node.js 18.12
-- npm 9.3.1
+- Node.js 22.19.0
+- npm 10.x
 
 ### Setup
 

@@ -1,4 +1,4 @@
-import createStyle from "masterportalAPI/src/vectorStyle/createStyle";
+import createStyle from "masterportalAPI/src/vectorStyle/createStyle.js";
 
 export default class StyleManager {
 

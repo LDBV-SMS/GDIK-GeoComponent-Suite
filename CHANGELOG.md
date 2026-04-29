@@ -10,6 +10,16 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.3.5
+### Added
+- configloaded event to gdik-input and gdik-select
+### Changed
+The following packages have been updated:
+- geowerkstatt-hamburg/masterportalAPI: 2.39.0 to 2.61.0
+### Deprecated
+### Removed
+### Fixed
+
 ## 1.3.4
 ### Added
 - Mechanism to patch dependencies
