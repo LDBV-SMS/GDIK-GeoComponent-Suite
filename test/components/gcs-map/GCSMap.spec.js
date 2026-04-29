@@ -31,7 +31,7 @@ describe("Init gcs-map", () => {
         expect(component.shadowRoot.childNodes[1].nodeName).toBe("DIV");
         expect(component.shadowRoot.childNodes[2].nodeName).toBe("SLOT");
 
-        expect(component.shadowRoot.childNodes[1].firstChild.className).toBe("ol-viewport");
+        expect(component.shadowRoot.childNodes[1].firstChild.className).toBe("ol-viewport ol-touch");
     });
 
     it("should use values from default config", async () => {
