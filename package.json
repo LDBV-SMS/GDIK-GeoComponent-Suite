@@ -71,5 +71,9 @@
     "timers-browserify": "^2.0.12",
     "url": "^0.11.3",
     "util": "^0.12.5"
+  },
+  "alias": {
+    "olcs/lib/olcs/util.js": "./node_modules/olcs/lib/olcs/util.js",
+    "zstddec/stream": "zstddec/dist/zstddec-stream.modern.js"
   }
 }
