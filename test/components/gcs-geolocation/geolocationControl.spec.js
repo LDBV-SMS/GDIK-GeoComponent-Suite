@@ -1,6 +1,6 @@
 import i18next from "i18next";
 
-import rawLayerList from "masterportalAPI/src/rawLayerList";
+import rawLayerList from "masterportalAPI/src/rawLayerList.js";
 
 import GeolocationControl from "../../../src/components/gcs-geolocation/geolocationControl";
 

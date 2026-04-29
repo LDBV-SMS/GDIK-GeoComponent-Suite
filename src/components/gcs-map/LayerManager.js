@@ -1,4 +1,4 @@
-import rawLayerList from "masterportalAPI/src/rawLayerList";
+import rawLayerList from "masterportalAPI/src/rawLayerList.js";
 import Observable from "ol/Observable";
 
 export default class LayerManager extends Observable {

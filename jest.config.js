@@ -9,9 +9,10 @@ module.exports = {
     /** mapping svg to string representation since jest can't handle svg */
     moduleNameMapper: {
         "marker.svg": "<rootDir>node_modules/masterportalAPI/public/stringMarker.js",
-        "olcs/lib/olcs/(.*)$": "<rootDir>/node_modules/olcs/lib/olcs/$1"
+        "olcs/lib/olcs/(.*)$": "<rootDir>/node_modules/olcs/lib/olcs/$1",
+        "^ol-mapbox-style$": "<rootDir>/node_modules/ol-mapbox-style/src/index.js"
     },
-    transformIgnorePatterns: ["/node_modules/(?!(masterportalAPI|ol|olcs|ol-mapbox-style|geotiff|quick-lru|color-space|color-rgba|color-parse|color-name)/).*/"],
+    transformIgnorePatterns: ["/node_modules/(?!(masterportalAPI|ol|olcs|ol-mapbox-style|mapbox-to-css-font|geotiff|quick-lru|color-space|color-rgba|color-parse|color-name|rbush|quickselect|earcut|pbf)/).*/"],
     testMatch: ["<rootDir>/test/**/?(*.)(spec|test).js"],
     testPathIgnorePatterns: ["<rootDir>/(node_modules|bin|build)"],
     transform: {
