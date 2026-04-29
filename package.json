@@ -22,6 +22,7 @@
     "audit": "npm audit --prod",
     "examples": "parcel example/index.html",
     "build": "parcel build",
+    "clean": "rm -rf node_modules package-lock.json",
     "patch:dependencies": "./scripts/patch-dependencies.sh",
     "postinstall": "npm run patch:dependencies"
   },
@@ -43,7 +44,7 @@
     "@babel/core": "^7.16.7",
     "@babel/plugin-transform-modules-commonjs": "^7.18.6",
     "@babel/preset-env": "^7.18.6",
-    "@parcel/transformer-inline-string": "^2.12.0",
+    "@parcel/transformer-inline-string": "^2.15.4",
     "@swc/jest": "^0.2.27",
     "assert": "^2.1.0",
     "babel-jest": "^28.1.1",
@@ -61,7 +62,7 @@
     "jest-environment-jsdom": "^30.3.0",
     "jest-fetch-mock": "^3.0.3",
     "jest-transform-stub": "^2.0.0",
-    "parcel": "^2.2.0",
+    "parcel": "^2.15.4",
     "process": "^0.11.10",
     "punycode": "^1.4.1",
     "resize-observer-polyfill": "^1.5.1",
@@ -71,5 +72,9 @@
     "timers-browserify": "^2.0.12",
     "url": "^0.11.3",
     "util": "^0.12.5"
+  },
+  "alias": {
+    "olcs/lib/olcs/util.js": "./node_modules/olcs/lib/olcs/util.js",
+    "zstddec/stream": "zstddec/dist/zstddec-stream.modern.js"
   }
 }
