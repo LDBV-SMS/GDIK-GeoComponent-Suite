@@ -22,6 +22,7 @@
     "audit": "npm audit --prod",
     "examples": "parcel example/index.html",
     "build": "parcel build",
+    "clean": "rm -rf node_modules package-lock.json",
     "patch:dependencies": "./scripts/patch-dependencies.sh",
     "postinstall": "npm run patch:dependencies"
   },
