@@ -1,7 +1,6 @@
 import i18next from "i18next";
 
 import mapsAPI from "masterportalAPI/src/maps/api.js";
-import rawLayerList from "masterportalAPI/src/rawLayerList.js";
 
 import LayerswitcherControl from "../../../src/components/gcs-layerswitcher/layerswitcherControl";
 
@@ -12,7 +11,7 @@ import * as _defaultConfig from "../gcs-map/assets/config.json";
 describe("Layerswitcher", () => {
     const defaultConfig = JSON.parse(JSON.stringify(_defaultConfig));
 
-    let layerManager, map, rawLayers;
+    let layerManager, map;
 
     beforeEach(() => {
         defaultConfig.services = [

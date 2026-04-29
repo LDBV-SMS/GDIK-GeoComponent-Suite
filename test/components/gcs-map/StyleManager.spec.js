@@ -1,4 +1,3 @@
-import rawLayerList from "masterportalAPI/src/rawLayerList.js";
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 import LayerManager from "../../../src/components/gcs-map/LayerManager";
 import StyleManager from "../../../src/components/gcs-map/StyleManager";
