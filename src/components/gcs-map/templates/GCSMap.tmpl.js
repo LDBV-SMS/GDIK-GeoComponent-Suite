@@ -110,6 +110,11 @@ style.appendChild(document.createTextNode(olCss + `
     .gcs-search .gcs-search-results div:hover {
         background-color: lightgray;
     }
+
+    .gcs-delete button.active,
+    .gcs-delete button.active:before {
+        border: 2px solid #dc3545;
+    }
 `));
 
 mapDiv.className = "gcs-map";

@@ -5,11 +5,13 @@ import GeoJSON from "ol/format/GeoJSON";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
 
-const DRAW_TYPES = ["Point", "LineString", "Polygon"],
-    format = new GeoJSON();
+const format = new GeoJSON();
 
 export default class DrawControl extends Control {
 
+    getSupportedDrawTypes () {
+        return ["Point", "LineString", "Polygon"];
+    }
     /**
 
         feature added -> disable draw -> enable edit, enable remove (changefeature, removefeature listener)
@@ -37,7 +39,7 @@ export default class DrawControl extends Control {
         }
         this.drawType = options.drawType;
 
-        if (DRAW_TYPES.filter(t => t === options.drawType).length !== 1) {
+        if (!this.getSupportedDrawTypes().includes(options.drawType)) {
             throw Error(`Unsupported draw type "${options.drawType}"`);
         }
 
