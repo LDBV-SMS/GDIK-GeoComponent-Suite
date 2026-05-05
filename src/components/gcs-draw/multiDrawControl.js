@@ -114,24 +114,7 @@ export default class MultiDrawControl extends DrawControl {
         }
     }
 
-    setFeatureCollection (featureCollection) {
-        let features;
-
-        try {
-            features = format.readFeatures(featureCollection);
-        }
-        catch (e) {
-            return;
-        }
-
-        // TODO move to "determineGeometryType" and rename it to "determineDrawType" afterdetermineDrawType is renamed to determinGeometryType
-        const geometryType = this.drawType.replace("Multi", "");
-
-        if (geometryType !== this.determineGeometryType(features)) {
-            throw Error("Geometry type of given feature collection mismatch draw-type");
-        }
-
-        this.featureSource.clear(true);
-        this.featureSource.addFeatures(features);
+    determinDrawType () {
+        return this.drawType.replace("Multi", "");
     }
 }

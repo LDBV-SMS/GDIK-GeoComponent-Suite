@@ -126,7 +126,7 @@ export default class DrawControl extends Control {
         catch (e) {
             return;
         }
-        if (this.drawType !== this.determineDrawType(features)) {
+        if (this.determinDrawType() !== this.determineGeometryType(features)) {
             throw Error("Geometry type of given feature collection mismatch draw-type");
         }
 
@@ -134,18 +134,21 @@ export default class DrawControl extends Control {
         this.featureSource.addFeatures(features);
     }
 
-    determineDrawType (features) {
-        let drawType;
+    determinDrawType () {
+        return this.drawType;
+    }
+
+    determineGeometryType (features) {
+        let geometryType;
 
         features.forEach((f) => {
             const featureType = f.getGeometry().getType();
 
-            if (drawType !== undefined && drawType !== featureType) {
+            if (geometryType !== undefined && geometryType !== featureType) {
                 throw Error("Inhomogeneous feature collection given");
             }
-            drawType = featureType;
+            geometryType = featureType;
         });
-        return drawType;
+        return geometryType;
     }
-
 }
