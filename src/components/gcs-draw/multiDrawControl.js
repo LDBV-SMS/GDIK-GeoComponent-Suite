@@ -1,9 +1,6 @@
 import DrawControl from "./drawControl";
 import Modify from "ol/interaction/Modify";
 import Select from "ol/interaction/Select";
-import GeoJSON from "ol/format/GeoJSON";
-
-const format = new GeoJSON();
 
 export default class MultiDrawControl extends DrawControl {
 
@@ -14,17 +11,12 @@ export default class MultiDrawControl extends DrawControl {
     constructor (layerManager, styleManager, options, i18next) {
         super(layerManager, styleManager, options, i18next);
 
-        this.drawing = false;
-
         this.selectInteraction = new Select({
             layers: [this.featureLayer]
         });
         this.selectInteraction.setActive(false);
 
         this.selectInteraction.on("select", this.handleSelectFeature.bind(this));
-
-        this.drawInteraction.on("drawstart", this.handleDrawStart.bind(this));
-        this.drawInteraction.on("drawend", this.handleDrawEnd.bind(this));
     }
 
     initModifyInteraction () {
@@ -44,14 +36,6 @@ export default class MultiDrawControl extends DrawControl {
         super.setMap(map);
 
         this.initModifyInteraction();
-    }
-
-    handleDrawStart () {
-        this.drawing = true;
-    }
-
-    handleDrawEnd () {
-        this.drawing = false;
     }
 
     handleAddFeature () {
