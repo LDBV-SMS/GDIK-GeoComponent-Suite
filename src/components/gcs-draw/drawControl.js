@@ -77,7 +77,23 @@ export default class DrawControl extends Control {
     setMap (map) {
         super.setMap(map);
         map.addInteraction(this.drawInteraction);
-        map.addInteraction(this.modifyInteraction);
+        this.initModifyInteraction();
+    }
+
+    initModifyInteraction () {
+        // there is an issue with the modify vertexes after deleting a feature,
+        // take a closer look at this in the near future, maybe we can find a better solution for this.
+        this.modifyInteraction = new Modify({
+            source: this.featureSource,
+            pixelTolerance: 5
+        });
+
+        this.modifyInteraction.on("modifyend", this.handleChangeFeature.bind(this));
+        this.modifyInteraction.getOverlay().getSource().on("addfeature", this.handleModifyVertexFeatureAdd.bind(this));
+        this.modifyInteraction.getOverlay().getSource().on("removefeature", this.handleModifyVertexFeatureRemove.bind(this));
+        this.modifyInteraction.setActive(false);
+
+        this.getMap().addInteraction(this.modifyInteraction);
     }
 
     handleLanguageChange () {
@@ -105,6 +121,14 @@ export default class DrawControl extends Control {
     handleClearDrawBtnClick () {
         this.featureSource.clear(true);
         this.featureSource.dispatchEvent("removefeature");
+    }
+
+    handleModifyVertexFeatureAdd () {
+        // noop
+    }
+
+    handleModifyVertexFeatureRemove () {
+        // noop
     }
 
     getFeatureCollection () {

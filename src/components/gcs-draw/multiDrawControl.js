@@ -1,5 +1,4 @@
 import DrawControl from "./drawControl";
-import Modify from "ol/interaction/Modify";
 import Select from "ol/interaction/Select";
 
 export default class MultiDrawControl extends DrawControl {
@@ -19,23 +18,9 @@ export default class MultiDrawControl extends DrawControl {
         this.selectInteraction.on("select", this.handleSelectFeature.bind(this));
     }
 
-    initModifyInteraction () {
-        // there is an issue with the modify vertexes after deleting a feature,
-        // take a closer look at this in the near future, maybe we can find a better solution for this.
-        this.modifyInteraction = new Modify({
-            source: this.featureSource
-        });
-
-        this.modifyInteraction.on("modifyend", this.handleChangeFeature.bind(this));
-        this.modifyInteraction.setActive(false);
-
-        this.getMap().addInteraction(this.modifyInteraction);
-    }
-
     setMap (map) {
         super.setMap(map);
         map.addInteraction(this.selectInteraction);
-        this.initModifyInteraction();
     }
 
     handleAddFeature () {
@@ -90,6 +75,16 @@ export default class MultiDrawControl extends DrawControl {
             this.modifyInteraction.setActive(false);
             this.getMap().removeInteraction(this.modifyInteraction);
         }
+    }
+
+    handleModifyVertexFeatureAdd () {
+        this.drawInteraction.setActive(false);
+        this.getMap().removeInteraction(this.drawInteraction);
+    }
+
+    handleModifyVertexFeatureRemove () {
+        this.drawInteraction.setActive(true);
+        this.getMap().addInteraction(this.drawInteraction);
     }
 
     determinDrawType () {
