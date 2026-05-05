@@ -12,12 +12,6 @@ export default class DrawControl extends Control {
     getSupportedDrawTypes () {
         return ["Point", "LineString", "Polygon"];
     }
-    /**
-
-        feature added -> disable draw -> enable edit, enable remove (changefeature, removefeature listener)
-        feature removed -> disable edit, disable remove -> enable draw (addfeature listerner)
-
-     */
 
     constructor (layerManager, styleManager, options, i18next) {
         const div = document.createElement("div"),
@@ -46,7 +40,7 @@ export default class DrawControl extends Control {
         this.featureSource = new VectorSource();
         this.featureLayer = new VectorLayer({source: this.featureSource});
 
-        drawOptions.type = this.drawType;
+        drawOptions.type = this.determinDrawType();
         drawOptions.source = this.featureSource;
 
         this.featureLayer.set("type", "Draw");

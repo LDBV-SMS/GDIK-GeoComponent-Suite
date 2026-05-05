@@ -156,7 +156,7 @@ describe("Draw multi mode", () => {
         const component = new GCSDraw();
         let drawInteraction;
 
-        component.setAttribute("draw-type", "MultiPoint");
+        component.setAttribute("draw-type", "PointCollection");
         component.registerGCSMap(map, layerManager, i18next);
         drawInteraction = map.getInteractions().getArray().filter((interaction) => interaction.constructor.name === "Draw");
         expect(drawInteraction.length).toBe(1);

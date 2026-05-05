@@ -49,7 +49,7 @@ describe("Multi Draw Control", () => {
     });
 
     it("should init multidraw control", () => {
-        const control = new MultiDrawControl(layerManager, undefined, {drawType: "MultiPoint"}, i18next);
+        const control = new MultiDrawControl(layerManager, undefined, {drawType: "PointCollection"}, i18next);
 
         expect(control.element.className).toBe("ol-control gcs-delete");
         expect(control.element.firstChild.nodeName).toBe("BUTTON");
@@ -60,7 +60,7 @@ describe("Multi Draw Control", () => {
     });
 
     it("should toggle controls depending on feature source", () => {
-        const control = new MultiDrawControl(layerManager, undefined, {drawType: "MultiPoint"}, i18next),
+        const control = new MultiDrawControl(layerManager, undefined, {drawType: "PointCollection"}, i18next),
             feature = new Feature({geometry: new Point([1, 1])}),
             addInteractionSpy = jest.spyOn(map, "addInteraction"),
             removeBtn = control.element.firstChild;
@@ -100,7 +100,7 @@ describe("Multi Draw Control", () => {
     });
 
     it("should deactivate draw and modify interactions when delete mode is active", () => {
-        const control = new MultiDrawControl(layerManager, undefined, {drawType: "MultiPoint"}, i18next),
+        const control = new MultiDrawControl(layerManager, undefined, {drawType: "PointCollection"}, i18next),
             removeBtn = control.element.firstChild;
 
         control.setMap(map);
@@ -120,7 +120,7 @@ describe("Multi Draw Control", () => {
     });
 
     it("should activate draw and modify interactions when delete mode is deactivated", () => {
-        const control = new MultiDrawControl(layerManager, undefined, {drawType: "MultiPoint"}, i18next),
+        const control = new MultiDrawControl(layerManager, undefined, {drawType: "PointCollection"}, i18next),
             removeBtn = control.element.firstChild;
 
         control.setMap(map);
@@ -142,7 +142,7 @@ describe("Multi Draw Control", () => {
     });
 
     it("should activate draw and modify and deactivate select interactions when all features are removed.", () => {
-        const control = new MultiDrawControl(layerManager, undefined, {drawType: "MultiPoint"}, i18next),
+        const control = new MultiDrawControl(layerManager, undefined, {drawType: "PointCollection"}, i18next),
             removeBtn = control.element.firstChild;
 
         control.setMap(map);
@@ -200,7 +200,7 @@ describe("Multi Draw Control", () => {
 
 
     it("should add features of given feature collection to feature source", () => {
-        const control = new MultiDrawControl(layerManager, undefined, {drawType: "MultiPoint"}, i18next);
+        const control = new MultiDrawControl(layerManager, undefined, {drawType: "PointCollection"}, i18next);
 
         control.setFeatureCollection("{\"type\": \"FeatureCollection\", \"features\": [{\"type\": \"Feature\", \"geometry\": {\"type\": \"Point\", \"coordinates\": [1, 1]}}, {\"type\": \"Feature\", \"geometry\": {\"type\": \"Point\", \"coordinates\": [2, 2]}}]}");
 
@@ -212,7 +212,7 @@ describe("Multi Draw Control", () => {
     });
 
     it("should not allow feature collections with geometry's unequal to control's draw type", () => {
-        const control = new MultiDrawControl(layerManager, undefined, {drawType: "MultiLineString"}, i18next);
+        const control = new MultiDrawControl(layerManager, undefined, {drawType: "LineStringCollection"}, i18next);
 
         expect(() => {
             control.setFeatureCollection("{\"type\": \"FeatureCollection\", \"features\": [{\"type\": \"Feature\", \"geometry\": {\"type\": \"Point\", \"coordinates\": [1, 1]}}]}");
@@ -221,7 +221,7 @@ describe("Multi Draw Control", () => {
     });
 
     it("should not allow mixed geometry types", () => {
-        const control = new MultiDrawControl(layerManager, undefined, {drawType: "MultiPoint"}, i18next);
+        const control = new MultiDrawControl(layerManager, undefined, {drawType: "PointCollection"}, i18next);
 
         expect(() => {
             control.setFeatureCollection("{\"type\": \"FeatureCollection\", \"features\": [{\"type\": \"Feature\", \"geometry\": {\"type\": \"Point\", \"coordinates\": [1, 1]}}, {\"type\": \"Feature\", \"geometry\": {\"type\": \"LineString\", \"coordinates\": [[1, 1], [2, 1], [2, 2]]}}]}");
@@ -238,7 +238,7 @@ describe("Multi Draw Control", () => {
 
     it("should ignore empty feature collections", () => {
         const control = new MultiDrawControl(layerManager, undefined, {
-            drawType: "MultiPoint",
+            drawType: "PointCollection",
             featureCollection: {"type": "FeatureCollection", "features": []}
         },
         i18next);
@@ -247,7 +247,7 @@ describe("Multi Draw Control", () => {
     });
 
     it("should customize style and name layer", () => {
-        const control = new MultiDrawControl(layerManager, styleManager, {drawType: "MultiPoint"}, i18next);
+        const control = new MultiDrawControl(layerManager, styleManager, {drawType: "PointCollection"}, i18next);
 
         control.setFeatureCollection("{\"type\": \"FeatureCollection\", \"features\": [{\"type\": \"Feature\", \"geometry\": {\"type\": \"Point\", \"coordinates\": [1, 1]}}]}");
 
@@ -258,7 +258,7 @@ describe("Multi Draw Control", () => {
     });
 
     it("should not customize style layer if StyleManager is undefined", () => {
-        const control = new MultiDrawControl(layerManager, undefined, {drawType: "MultiPoint"}, i18next);
+        const control = new MultiDrawControl(layerManager, undefined, {drawType: "PointCollection"}, i18next);
 
         control.setFeatureCollection("{\"type\": \"FeatureCollection\", \"features\": [{\"type\": \"Feature\", \"geometry\": {\"type\": \"Point\", \"coordinates\": [1, 1]}}]}");
 
@@ -267,7 +267,7 @@ describe("Multi Draw Control", () => {
 
     it("should not customize style layer if no interactionLayerStlyeId is given", () => {
         const myStyleManager = new StyleManager(defaultConfig.style, undefined),
-            control = new MultiDrawControl(layerManager, myStyleManager, {drawType: "MultiPoint"}, i18next);
+            control = new MultiDrawControl(layerManager, myStyleManager, {drawType: "PointCollection"}, i18next);
 
         control.setFeatureCollection("{\"type\": \"FeatureCollection\", \"features\": [{\"type\": \"Feature\", \"geometry\": {\"type\": \"Point\", \"coordinates\": [1, 1]}}]}");
 

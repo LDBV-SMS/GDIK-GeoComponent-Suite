@@ -15,7 +15,7 @@ export default class GCSDraw extends HTMLElement {
 
     registerGCSMap (map, layerManager, i18next, styleManager) {
         const drawType = this.getAttribute("draw-type"),
-            ControlClass = drawType && drawType.startsWith("Multi") ? MultiDrawControl : DrawControl;
+            ControlClass = drawType && drawType.endsWith("Collection") ? MultiDrawControl : DrawControl;
 
         i18next.addResources("en", "draw", {ERASE_DRAW: "Erase geometry"});
         i18next.addResources("de", "draw", {ERASE_DRAW: "Geometrie löschen"});

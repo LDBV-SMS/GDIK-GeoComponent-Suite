@@ -8,16 +8,8 @@ const format = new GeoJSON();
 export default class MultiDrawControl extends DrawControl {
 
     getSupportedDrawTypes () {
-        return ["MultiPoint", "MultiLineString", "MultiPolygon"];
+        return ["PointCollection", "LineStringCollection", "PolygonCollection"];
     }
-
-    /**
-        feature added
-            -> enable edit, enable remove (changefeature, removefeature listener), enable draw, enable select
-        feature removed
-            -> if no features left disable edit, disable remove
-
-     */
 
     constructor (layerManager, styleManager, options, i18next) {
         super(layerManager, styleManager, options, i18next);
@@ -36,6 +28,8 @@ export default class MultiDrawControl extends DrawControl {
     }
 
     initModifyInteraction () {
+        // there is an issue with the modify vertexes after deleting a feature,
+        // take a closer look at this in the near future, maybe we can find a better solution for this.
         this.modifyInteraction = new Modify({
             source: this.featureSource
         });
@@ -115,6 +109,6 @@ export default class MultiDrawControl extends DrawControl {
     }
 
     determinDrawType () {
-        return this.drawType.replace("Multi", "");
+        return this.drawType.replace("Collection", "");
     }
 }
