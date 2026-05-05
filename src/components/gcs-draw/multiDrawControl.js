@@ -24,11 +24,10 @@ export default class MultiDrawControl extends DrawControl {
     }
 
     handleAddFeature () {
-        // in some test cases, there is no map.
-        if (!this.getMap()) {
-            return;
+        // when a feature is given on control initialization, modify interaction is not yet initialized.
+        if (this.modifyInteraction) {
+            this.modifyInteraction.setActive(true);
         }
-        this.modifyInteraction.setActive(true);
         this.clearDrawBtn.disabled = false;
         this.dispatchEvent("featureupdate");
     }

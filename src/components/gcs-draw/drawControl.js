@@ -57,14 +57,8 @@ export default class DrawControl extends Control {
         this.drawInteraction = new Draw(drawOptions);
         this.drawInteraction.setActive(true);
 
-        this.modifyInteraction = new Modify({
-            source: this.featureSource
-        });
-        this.modifyInteraction.setActive(false);
-
         this.featureSource.on("addfeature", this.handleAddFeature.bind(this));
         this.featureSource.on("removefeature", this.handleRemoveFeature.bind(this));
-        this.modifyInteraction.on("modifyend", this.handleChangeFeature.bind(this));
 
         clearDrawBtn.onclick = this.handleClearDrawBtnClick.bind(this);
 
@@ -76,11 +70,13 @@ export default class DrawControl extends Control {
 
     setMap (map) {
         super.setMap(map);
+
         map.addInteraction(this.drawInteraction);
-        this.initModifyInteraction();
+        // when at least one feature is present hat init time, activate modify interaction
+        this.initModifyInteraction(this.featureSource.getFeatures().length > 0);
     }
 
-    initModifyInteraction () {
+    initModifyInteraction (activate = false) {
         // there is an issue with the modify vertexes after deleting a feature,
         // take a closer look at this in the near future, maybe we can find a better solution for this.
         this.modifyInteraction = new Modify({
@@ -91,7 +87,7 @@ export default class DrawControl extends Control {
         this.modifyInteraction.on("modifyend", this.handleChangeFeature.bind(this));
         this.modifyInteraction.getOverlay().getSource().on("addfeature", this.handleModifyVertexFeatureAdd.bind(this));
         this.modifyInteraction.getOverlay().getSource().on("removefeature", this.handleModifyVertexFeatureRemove.bind(this));
-        this.modifyInteraction.setActive(false);
+        this.modifyInteraction.setActive(activate);
 
         this.getMap().addInteraction(this.modifyInteraction);
     }
@@ -102,7 +98,12 @@ export default class DrawControl extends Control {
 
     handleAddFeature () {
         this.drawInteraction.setActive(false);
-        this.modifyInteraction.setActive(true);
+
+        // when a feature is given on control initialization, modify interaction is not yet initialized.
+        if (this.modifyInteraction) {
+            this.modifyInteraction.setActive(true);
+        }
+
         this.clearDrawBtn.disabled = false;
         this.dispatchEvent("featureupdate");
     }
