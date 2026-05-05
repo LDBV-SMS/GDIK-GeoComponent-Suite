@@ -34,7 +34,7 @@ export default class MultiDrawControl extends DrawControl {
 
     setMap (map) {
         super.setMap(map);
-
+        map.addInteraction(this.selectInteraction);
         this.initModifyInteraction();
     }
 
