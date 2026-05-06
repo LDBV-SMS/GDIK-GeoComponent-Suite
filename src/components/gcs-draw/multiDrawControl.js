@@ -76,6 +76,14 @@ export default class MultiDrawControl extends DrawControl {
         }
     }
 
+    handleDrawStart () {
+        this.modifyInteraction.setActive(false);
+    }
+
+    handleDrawEnd () {
+        this.modifyInteraction.setActive(true);
+    }
+
     handleModifyVertexFeatureAdd () {
         this.drawInteraction.setActive(false);
         this.getMap().removeInteraction(this.drawInteraction);

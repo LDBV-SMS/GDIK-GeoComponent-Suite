@@ -56,6 +56,8 @@ export default class DrawControl extends Control {
 
         this.drawInteraction = new Draw(drawOptions);
         this.drawInteraction.setActive(true);
+        this.drawInteraction.on("drawstart", this.handleDrawStart.bind(this));
+        this.drawInteraction.on("drawend", this.handleDrawEnd.bind(this));
 
         this.featureSource.on("addfeature", this.handleAddFeature.bind(this));
         this.featureSource.on("removefeature", this.handleRemoveFeature.bind(this));
@@ -129,6 +131,14 @@ export default class DrawControl extends Control {
     }
 
     handleModifyVertexFeatureRemove () {
+        // noop
+    }
+
+    handleDrawStart () {
+        // noop
+    }
+
+    handleDrawEnd () {
         // noop
     }
 
