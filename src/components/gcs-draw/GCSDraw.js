@@ -1,4 +1,5 @@
 import DrawControl from "./drawControl";
+import MultiDrawControl from "./multiDrawControl";
 
 export default class GCSDraw extends HTMLElement {
 
@@ -13,11 +14,14 @@ export default class GCSDraw extends HTMLElement {
     }
 
     registerGCSMap (map, layerManager, i18next, styleManager) {
+        const drawType = this.getAttribute("draw-type"),
+            ControlClass = drawType && drawType.endsWith("Collection") ? MultiDrawControl : DrawControl;
+
         i18next.addResources("en", "draw", {ERASE_DRAW: "Erase geometry"});
         i18next.addResources("de", "draw", {ERASE_DRAW: "Geometrie löschen"});
 
-        this.control = new DrawControl(layerManager, styleManager, {
-            drawType: this.getAttribute("draw-type")
+        this.control = new ControlClass(layerManager, styleManager, {
+            drawType: drawType
         }, i18next);
 
         if (this.hasAttribute("feature")) {
