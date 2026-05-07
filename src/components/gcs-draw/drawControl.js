@@ -5,17 +5,13 @@ import GeoJSON from "ol/format/GeoJSON";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
 
-const DRAW_TYPES = ["Point", "LineString", "Polygon"],
-    format = new GeoJSON();
+const format = new GeoJSON();
 
 export default class DrawControl extends Control {
 
-    /**
-
-        feature added -> disable draw -> enable edit, enable remove (changefeature, removefeature listener)
-        feature removed -> disable edit, disable remove -> enable draw (addfeature listerner)
-
-     */
+    getSupportedDrawTypes () {
+        return ["Point", "LineString", "Polygon"];
+    }
 
     constructor (layerManager, styleManager, options, i18next) {
         const div = document.createElement("div"),
@@ -37,14 +33,14 @@ export default class DrawControl extends Control {
         }
         this.drawType = options.drawType;
 
-        if (DRAW_TYPES.filter(t => t === options.drawType).length !== 1) {
+        if (!this.getSupportedDrawTypes().includes(options.drawType)) {
             throw Error(`Unsupported draw type "${options.drawType}"`);
         }
 
         this.featureSource = new VectorSource();
         this.featureLayer = new VectorLayer({source: this.featureSource});
 
-        drawOptions.type = this.drawType;
+        drawOptions.type = this.determinDrawType();
         drawOptions.source = this.featureSource;
 
         this.featureLayer.set("type", "Draw");
@@ -60,15 +56,11 @@ export default class DrawControl extends Control {
 
         this.drawInteraction = new Draw(drawOptions);
         this.drawInteraction.setActive(true);
-
-        this.modifyInteraction = new Modify({
-            source: this.featureSource
-        });
-        this.modifyInteraction.setActive(false);
+        this.drawInteraction.on("drawstart", this.handleDrawStart.bind(this));
+        this.drawInteraction.on("drawend", this.handleDrawEnd.bind(this));
 
         this.featureSource.on("addfeature", this.handleAddFeature.bind(this));
         this.featureSource.on("removefeature", this.handleRemoveFeature.bind(this));
-        this.modifyInteraction.on("modifyend", this.handleChangeFeature.bind(this));
 
         clearDrawBtn.onclick = this.handleClearDrawBtnClick.bind(this);
 
@@ -80,8 +72,26 @@ export default class DrawControl extends Control {
 
     setMap (map) {
         super.setMap(map);
+
         map.addInteraction(this.drawInteraction);
-        map.addInteraction(this.modifyInteraction);
+        // when at least one feature is present hat init time, activate modify interaction
+        this.initModifyInteraction(this.featureSource.getFeatures().length > 0);
+    }
+
+    initModifyInteraction (activate = false) {
+        // there is an issue with the modify vertexes after deleting a feature,
+        // take a closer look at this in the near future, maybe we can find a better solution for this.
+        this.modifyInteraction = new Modify({
+            source: this.featureSource,
+            pixelTolerance: 5
+        });
+
+        this.modifyInteraction.on("modifyend", this.handleChangeFeature.bind(this));
+        this.modifyInteraction.getOverlay().getSource().on("addfeature", this.handleModifyVertexFeatureAdd.bind(this));
+        this.modifyInteraction.getOverlay().getSource().on("removefeature", this.handleModifyVertexFeatureRemove.bind(this));
+        this.modifyInteraction.setActive(activate);
+
+        this.getMap().addInteraction(this.modifyInteraction);
     }
 
     handleLanguageChange () {
@@ -90,7 +100,12 @@ export default class DrawControl extends Control {
 
     handleAddFeature () {
         this.drawInteraction.setActive(false);
-        this.modifyInteraction.setActive(true);
+
+        // when a feature is given on control initialization, modify interaction is not yet initialized.
+        if (this.modifyInteraction) {
+            this.modifyInteraction.setActive(true);
+        }
+
         this.clearDrawBtn.disabled = false;
         this.dispatchEvent("featureupdate");
     }
@@ -111,6 +126,22 @@ export default class DrawControl extends Control {
         this.featureSource.dispatchEvent("removefeature");
     }
 
+    handleModifyVertexFeatureAdd () {
+        // noop
+    }
+
+    handleModifyVertexFeatureRemove () {
+        // noop
+    }
+
+    handleDrawStart () {
+        // noop
+    }
+
+    handleDrawEnd () {
+        // noop
+    }
+
     getFeatureCollection () {
         return this.featureSource.getFeatures().length === 0 ? undefined : format.writeFeatures(this.featureSource.getFeatures());
     }
@@ -124,7 +155,7 @@ export default class DrawControl extends Control {
         catch (e) {
             return;
         }
-        if (this.drawType !== this.determineDrawType(features)) {
+        if (this.determinDrawType() !== this.determineGeometryType(features)) {
             throw Error("Geometry type of given feature collection mismatch draw-type");
         }
 
@@ -132,18 +163,21 @@ export default class DrawControl extends Control {
         this.featureSource.addFeatures(features);
     }
 
-    determineDrawType (features) {
-        let drawType;
+    determinDrawType () {
+        return this.drawType;
+    }
+
+    determineGeometryType (features) {
+        let geometryType;
 
         features.forEach((f) => {
             const featureType = f.getGeometry().getType();
 
-            if (drawType !== undefined && drawType !== featureType) {
+            if (geometryType !== undefined && geometryType !== featureType) {
                 throw Error("Inhomogeneous feature collection given");
             }
-            drawType = featureType;
+            geometryType = featureType;
         });
-        return drawType;
+        return geometryType;
     }
-
 }
