@@ -86,7 +86,7 @@ export default class SearchControl extends Control {
         findings.features.forEach((feature) => {
             const elem = document.createElement("div");
 
-            elem.innerHTML = feature.properties.text;
+            elem.textContent = feature.properties.text;
 
             elem.onclick = this.showResult.bind(this, feature.properties.text, feature.geometry.coordinates, feature.bbox, false);
             this.resultsContainer.appendChild(elem);
@@ -122,6 +122,6 @@ export default class SearchControl extends Control {
     }
 
     clearResults () {
-        this.resultsContainer.innerHTML = "";
+        this.resultsContainer.textContent = "";
     }
 }

@@ -68,7 +68,7 @@ export default class LayerswitcherControl extends Control {
             li.className += layer.getVisible() ? " active" : "";
 
             li.addEventListener("click", this.handleBackgroundLayerChange.bind(this, layer.get("id")));
-            li.innerHTML = layer.get("name");
+            li.textContent = layer.get("name");
 
             this.layerContainer.appendChild(li);
         });

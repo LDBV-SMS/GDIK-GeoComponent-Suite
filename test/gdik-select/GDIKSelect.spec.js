@@ -4,6 +4,8 @@ enableFetchMocks();
 import GDIKSelect from "../../src/gdik-select/GDIKSelect";
 import GCSMap from "../../src/components/gcs-map/GCSMap";
 
+import * as customConfig from "../components/gcs-map/assets/config.json";
+
 describe("Init gdik-select", () => {
     it("can create gdik-select component", () => {
         expect(GDIKSelect).toBeDefined();
@@ -239,6 +241,36 @@ describe("config file handling", () => {
 
         expect(component.shadowRoot.childNodes[0].nodeName).toBe("GCS-MAP");
         expect(component.shadowRoot.childNodes[0].getAttribute("config-url")).toBe(configUrl);
+    });
+
+    it("should trigger configloaded event when config is loaded", async () => {
+        const component = new GDIKSelect(),
+            configUrl = "https://config",
+            spy = jest.spyOn(component, "dispatchEvent");
+
+        fetch.mockResponseOnce(JSON.stringify(customConfig));
+
+        component.setAttribute("config-url", configUrl);
+
+        document.body.appendChild(component);
+        await new Promise(process.nextTick);
+
+        expect(spy).toBeCalledWith(expect.objectContaining({
+            type: "configloaded"
+        }));
+    });
+
+    it("should trigger configloaded event with default config when no config-url is set", async () => {
+        fetch.mockResponseOnce(JSON.stringify(customConfig));
+        const component = new GDIKSelect(),
+            spy = jest.spyOn(component, "dispatchEvent");
+
+        document.body.appendChild(component);
+        await new Promise(process.nextTick);
+
+        expect(spy).toBeCalledWith(expect.objectContaining({
+            type: "configloaded"
+        }));
     });
 
     it.todo("should add search component when searchUrl defined in loaded config");

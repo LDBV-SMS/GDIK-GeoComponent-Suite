@@ -17,7 +17,7 @@ describe("Draw Control", () => {
     let map, layerManager, styleManager;
 
     beforeEach(() => {
-        map = mapsAPI.map.createMap();
+        map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D");
         layerManager = new LayerManager(map, []);
         styleManager = new StyleManager(defaultConfig.style, defaultConfig.component.interactionLayerStyleId);
     });

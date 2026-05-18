@@ -31,7 +31,7 @@ describe("Init gcs-map", () => {
         expect(component.shadowRoot.childNodes[1].nodeName).toBe("DIV");
         expect(component.shadowRoot.childNodes[2].nodeName).toBe("SLOT");
 
-        expect(component.shadowRoot.childNodes[1].firstChild.className).toBe("ol-viewport");
+        expect(component.shadowRoot.childNodes[1].firstChild.className).toBe("ol-viewport ol-touch");
     });
 
     it("should use values from default config", async () => {
@@ -276,6 +276,11 @@ describe("Attribute change related", () => {
 
 describe("Reading of config.json", () => {
 
+    beforeEach(() => {
+        jest.resetAllMocks();
+        fetch.resetMocks();
+    });
+
     it("should initialize LayerManager correctly with foregroundLayer and backgroundLayer", async () => {
         fetch.mockResponseOnce(JSON.stringify(customConfig)); // customConfig has a foregroundLayer defined
         const component = new GCSMap();
@@ -412,5 +417,39 @@ describe("public functions", () => {
         component.fit(geometry);
 
         expect(component.map.getView().getCenter()).toEqual(coordinate);
+    });
+});
+
+describe("Event triggering", () => {
+    beforeEach(() => {
+        jest.resetAllMocks();
+        fetch.resetMocks();
+    });
+
+    it("should trigger configloaded event when config is loaded", async () => {
+        fetch.mockResponse(JSON.stringify(customConfig));
+        const component = new GCSMap(),
+            spy = jest.spyOn(component, "dispatchEvent");
+
+        component.setAttribute("config-url", "http://config.service/config.json");
+
+        await component.connectedCallback();
+
+        expect(spy).toBeCalledWith(expect.objectContaining({
+            type: "configloaded"
+        }));
+
+        expect(spy.mock.calls[0][0].detail.portal.startCenter).toEqual(customConfig.portal.startCenter);
+    });
+
+    it("should trigger configloaded event with default config when no config-url is set", async () => {
+        const component = new GCSMap(),
+            spy = jest.spyOn(component, "dispatchEvent");
+
+        await component.connectedCallback();
+
+        expect(spy).toBeCalledWith(expect.objectContaining({
+            type: "configloaded"
+        }));
     });
 });
