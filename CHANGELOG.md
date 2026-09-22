@@ -5,7 +5,10 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 
 ## Unreleased - in development
 ### Added
+- docker-compose.example.yml
 ### Changed
+- CHANGELOG.md
+- node modules updated
 ### Deprecated
 ### Removed
 ### Fixed

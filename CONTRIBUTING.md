@@ -31,3 +31,9 @@ or
 ### Releasing Build
 
 ```npm run build```
+
+### Setup via Docker Compose
+```
+>> cp docker-compose.example.yml docker-compose.yml
+>> docker compose run --rm --service-ports gdik-geocomponent-suite
+```

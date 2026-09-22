@@ -1,0 +1,30 @@
+services:
+  gdik-geocomponent-suite:
+    image: node:lts
+
+    # user: <CHANGE-ME>UID:GID</CHANGE-ME>
+
+    working_dir: /home/node/app
+
+    # env_file:
+      # <CHANGE-ME>PATH-TO-ENV-FILE</CHANGE-ME>
+
+    environment:
+      HOME: /home/node/app
+      PWD: /home/node/app
+    #   NODE_USE_ENV_PROXY: <CHANGE-ME>1<CHANGE-ME>
+    #   NODE_USE_SYSTEM_CA: <CHANGE-ME>1</CHANGE-ME>
+
+    ports:
+      - "1234:1234"
+
+    volumes:
+      - "${PWD}:/home/node/app"
+      # <CHANGE-ME>PATH-TO-SSL-CERTS-DIRECTORY</CHANGE-ME>
+
+    stdin_open: true
+    tty: true
+
+    command: 
+      - "/bin/bash"
+
