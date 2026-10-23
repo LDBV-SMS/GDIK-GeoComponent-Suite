@@ -29,7 +29,7 @@ describe("OpenSearch Geo and Time Extensions", () => {
         const osgts = new OSGTS(options),
             result = await osgts.search("Oldenburg");
 
-        expect(fetch).toBeCalledWith("https://search?outputformat=json&srsName=epsg:25832&query=Oldenburg&count=5");
+        expect(fetch).toHaveBeenCalledWith("https://search?outputformat=json&srsName=epsg:25832&query=Oldenburg&count=5");
 
         expect(result).toEqual(searchResult);
     });
@@ -38,7 +38,7 @@ describe("OpenSearch Geo and Time Extensions", () => {
         const osgts = new OSGTS(Object.assign({}, options, {extent: [123, 321, 124, 322]})),
             result = await osgts.search("Oldenburg");
 
-        expect(fetch).toBeCalledWith("https://search?outputformat=json&bbox=123,321,124,322&srsName=epsg:25832&query=Oldenburg&count=5");
+        expect(fetch).toHaveBeenCalledWith("https://search?outputformat=json&bbox=123,321,124,322&srsName=epsg:25832&query=Oldenburg&count=5");
 
         expect(result).toEqual(searchResult);
     });

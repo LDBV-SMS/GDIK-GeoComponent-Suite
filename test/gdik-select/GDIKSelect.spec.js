@@ -255,7 +255,7 @@ describe("config file handling", () => {
         document.body.appendChild(component);
         await new Promise(process.nextTick);
 
-        expect(spy).toBeCalledWith(expect.objectContaining({
+        expect(spy).toHaveBeenCalledWith(expect.objectContaining({
             type: "configloaded"
         }));
     });
@@ -268,7 +268,7 @@ describe("config file handling", () => {
         document.body.appendChild(component);
         await new Promise(process.nextTick);
 
-        expect(spy).toBeCalledWith(expect.objectContaining({
+        expect(spy).toHaveBeenCalledWith(expect.objectContaining({
             type: "configloaded"
         }));
     });

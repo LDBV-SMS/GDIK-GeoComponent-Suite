@@ -10,7 +10,8 @@ module.exports = {
     moduleNameMapper: {
         "marker.svg": "<rootDir>node_modules/masterportalAPI/public/stringMarker.js",
         "olcs/lib/olcs/(.*)$": "<rootDir>/node_modules/olcs/lib/olcs/$1",
-        "^ol-mapbox-style$": "<rootDir>/node_modules/ol-mapbox-style/src/index.js"
+        "^ol-mapbox-style$": "<rootDir>/node_modules/ol-mapbox-style/src/index.js",
+        '^bundle-text:.*$': '<rootDir>/test/__mocks__/bundleTextStub.js'
     },
     transformIgnorePatterns: ["/node_modules/(?!(masterportalAPI|ol|olcs|ol-mapbox-style|mapbox-to-css-font|geotiff|quick-lru|color-space|color-rgba|color-parse|color-name|rbush|quickselect|earcut|pbf)/).*/"],
     testMatch: ["<rootDir>/test/**/?(*.)(spec|test).js"],
