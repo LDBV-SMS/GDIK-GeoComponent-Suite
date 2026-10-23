@@ -82,6 +82,23 @@ describe("LayerManager", () => {
         ];
     });
 
+    it("should apply resolution limits of WFS and WMS layers", () => {
+        defaultConfig.services[0].minResolution = 0.6614579761460262;
+        defaultConfig.services[0].maxResolution = 10.583327618336419;
+        defaultConfig.services[3].maxResolution = 5.2916638091682096;
+
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
+            layerManager = new LayerManager(map, ["1001", "1002"], "1337");
+
+        expect(layerManager.backgroundLayers[0].getMinResolution()).toBe(0.6614579761460262);
+        expect(layerManager.backgroundLayers[0].getMaxResolution()).toBe(10.583327618336419);
+        expect(layerManager.foregroundLayer.getMinResolution()).toBe(0);
+        expect(layerManager.foregroundLayer.getMaxResolution()).toBe(5.2916638091682096);
+        // no limits configured
+        expect(layerManager.backgroundLayers[1].getMinResolution()).toBe(0);
+        expect(layerManager.backgroundLayers[1].getMaxResolution()).toBe(Infinity);
+    });
+
     it("should create layers from given ids", () => {
         const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
             backgroundLayerIds = ["1001"],

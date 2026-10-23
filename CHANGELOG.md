@@ -5,9 +5,9 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 
 ## Unreleased - in development
 ### Added
+- support `minResolution`/`maxResolution` for WFS layer
 - docker-compose.example.yml
 ### Changed
-- CHANGELOG.md
 - node modules updated
 ### Deprecated
 ### Removed

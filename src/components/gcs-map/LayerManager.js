@@ -1,6 +1,23 @@
 import rawLayerList from "masterportalAPI/src/rawLayerList.js";
 import Observable from "ol/Observable";
 
+/**
+ * Applies the visibility limits of the raw layer to the layer.
+ * masterportalAPI only does this for some layer types (e.g. WMS), not for WFS.
+ * The layer is visible for minResolution <= resolution < maxResolution.
+ * @param {ol.layer.Base} layer the layer
+ * @param {Object} rawLayer raw layer config
+ * @returns {void}
+ */
+function applyResolutionLimits (layer, rawLayer) {
+    if (typeof rawLayer.minResolution === "number") {
+        layer.setMinResolution(rawLayer.minResolution);
+    }
+    if (typeof rawLayer.maxResolution === "number") {
+        layer.setMaxResolution(rawLayer.maxResolution);
+    }
+}
+
 export default class LayerManager extends Observable {
 
     static get supportedInteractionLayerTypes () {
@@ -26,6 +43,7 @@ export default class LayerManager extends Observable {
             }
 
             layer = map.addLayer(layerId);
+            applyResolutionLimits(layer, rawLayer);
             layer.set("name", rawLayer.name);
             layer.set("styleId", rawLayer.styleId);
             layer.set("type", rawLayer.typ);
@@ -49,6 +67,7 @@ export default class LayerManager extends Observable {
             }
 
             layer = map.addLayer(foregroundLayerId);
+            applyResolutionLimits(layer, rawLayer);
             layer.set("name", rawLayer.name);
             layer.set("styleId", rawLayer.styleId);
             layer.set("type", rawLayer.typ);
