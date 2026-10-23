@@ -48,7 +48,7 @@ describe("Search", () => {
             // noop
         }});
 
-        expect(fetch).toBeCalledWith("https://search?outputformat=json&srsName=EPSG:25832&query=" + searchString + "&count=5");
+        expect(fetch).toHaveBeenCalledWith("https://search?outputformat=json&srsName=EPSG:25832&query=" + searchString + "&count=5");
     });
 
     it("should render search results", () => {

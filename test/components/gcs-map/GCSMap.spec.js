@@ -67,7 +67,7 @@ describe("Init gcs-map", () => {
 
         await component.connectedCallback();
 
-        expect(fetch).toBeCalledWith("http://config.service/config.json");
+        expect(fetch).toHaveBeenCalledWith("http://config.service/config.json");
 
         expect(Number(component.getAttribute("lon"))).toBe(customConfig.portal.startCenter[0]);
         expect(Number(component.getAttribute("lat"))).toBe(customConfig.portal.startCenter[1]);
@@ -105,7 +105,7 @@ describe("Init gcs-map", () => {
 
         await component.connectedCallback();
 
-        expect(spy).toBeCalledWith("en");
+        expect(spy).toHaveBeenCalledWith("en");
     });
 });
 
@@ -270,7 +270,7 @@ describe("Attribute change related", () => {
 
         component.setAttribute("lng", "en");
 
-        expect(spy).toBeCalledWith("en");
+        expect(spy).toHaveBeenCalledWith("en");
     });
 });
 
@@ -435,7 +435,7 @@ describe("Event triggering", () => {
 
         await component.connectedCallback();
 
-        expect(spy).toBeCalledWith(expect.objectContaining({
+        expect(spy).toHaveBeenCalledWith(expect.objectContaining({
             type: "configloaded"
         }));
 
@@ -448,7 +448,7 @@ describe("Event triggering", () => {
 
         await component.connectedCallback();
 
-        expect(spy).toBeCalledWith(expect.objectContaining({
+        expect(spy).toHaveBeenCalledWith(expect.objectContaining({
             type: "configloaded"
         }));
     });

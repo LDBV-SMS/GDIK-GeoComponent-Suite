@@ -8,6 +8,9 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 - support `minResolution`/`maxResolution` for WFS layer
 - docker-compose.example.yml
 ### Changed
+The following packages have been updated:
+- jest: 28.1.1 -> 30.5.2
+- babel-jest: 28.1.1 -> 30.5.2
 - node modules updated
 ### Deprecated
 ### Removed
